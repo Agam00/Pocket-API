@@ -30,6 +30,7 @@
   - [0.19 Phase 0 status](#019-phase-0-status)
   - [0.20 Deep dive: `"main": "expo-router/entry"`](#020-deep-dive-main-expo-routerentry)
   - [0.21 Resetting the project (blank slate)](#021-resetting-the-project-blank-slate)
+  - [0.22 Git & GitHub setup](#022-git--github-setup)
 
 ---
 
@@ -1361,6 +1362,76 @@ The smallest possible screen: a `View` that fills the screen and centers one `Te
 ### Note on `example/`
 
 Metro **won't bundle** `example/` — nothing imports it, and it's not inside `src/app/` (remember 0.20: only files reachable from `main` end up in the app). It's just there for reference: we can copy ideas from `example/src/constants/theme.ts` or `themed-text.tsx` when we build our theme in Phase 5. Delete it when no longer useful.
+
+---
+
+## 0.22 Git & GitHub setup
+
+### Git vs GitHub (simple)
+
+- **Git** = a program on **your PC** that saves **snapshots** of your project (called **commits**). You can go back to any snapshot.
+- **GitHub** = a **website** that stores a copy of your Git project online. Good for backup, sharing, and showing recruiters.
+
+Analogy: Git is the **save button** in a game; GitHub is **cloud save**.
+
+### What we did
+
+1. Installed **Git** and the **GitHub CLI** (`gh`) with `winget` (Windows' package manager).
+2. Logged in to GitHub with `gh auth login --web` (one-time code at github.com/login/device), then `gh auth setup-git` so Git can push using that login.
+3. Set up the repo and pushed:
+
+```bash
+git init -b main                         # start a Git repo, main branch = "main"
+git config user.name "Agam00"            # who made the commits (this repo only)
+git config user.email "144566037+Agam00@users.noreply.github.com"
+git add -A                               # stage ALL files for the next commit
+git commit -m "chore: initial Expo project setup (SDK 58, TS strict, ESLint + Prettier)"
+git remote add origin https://github.com/Agam00/Pocket-API.git   # link to GitHub
+git push -u origin main                  # upload; -u remembers origin/main for next time
+```
+
+Repo: **https://github.com/Agam00/Pocket-API**
+
+### Key ideas
+
+| Term                  | Meaning                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------ |
+| **repository (repo)** | A project tracked by Git (the hidden `.git/` folder holds all history)                           |
+| **commit**            | A saved snapshot + a message describing the change                                               |
+| **stage (`git add`)** | Choose which changes go into the next commit                                                     |
+| **branch**            | A separate line of work. `main` = the main one                                                   |
+| **remote / origin**   | The online copy (GitHub). `origin` is just the default nickname                                  |
+| **push / pull**       | Upload commits to GitHub / download commits from GitHub                                          |
+| **`.gitignore`**      | Files Git must **not** track: `node_modules/`, `.expo/`, `example/`, `android/`, `ios/`, secrets |
+
+### Why not `node_modules/` in Git?
+
+It's huge (thousands of files) and can be rebuilt any time with `npm install` from `package.json` + `package-lock.json`. Always commit **`package-lock.json`** — it pins exact versions so everyone installs the same thing.
+
+### Privacy: no-reply email
+
+Every commit stores an **email**, and on a public repo anyone can see it. We used GitHub's private address `ID+username@users.noreply.github.com` instead of a real email. GitHub still links commits to the profile.
+
+### Commit message style (Conventional Commits)
+
+```
+feat: add cURL import        ← new feature
+fix: timeout not clearing    ← bug fix
+chore: update dependencies   ← setup/maintenance
+docs: add phase 1 notes      ← documentation
+refactor: extract UrlBar     ← code change, same behavior
+test: add buildUrl tests     ← tests
+```
+
+### Everyday commands
+
+```bash
+git status                  # what changed?
+git add -A                  # stage everything
+git commit -m "feat: ..."   # save a snapshot
+git push                    # upload to GitHub
+git log --oneline           # list commits
+```
 
 ---
 
